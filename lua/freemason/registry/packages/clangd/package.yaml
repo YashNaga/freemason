@@ -1,0 +1,15 @@
+name: clangd
+description: Language server for C/C++/Objective-C
+homepage: https://clangd.llvm.org/
+languages:
+  - c
+  - cpp
+  - objc
+  - objcpp
+categories:
+  - lsp
+executables:
+  - clangd
+install:
+  - brew install llvm
+  - ln -s /opt/homebrew/opt/llvm/bin/clangd /opt/homebrew/bin/clangd

@@ -1,0 +1,37 @@
+---
+name: metamath-zero-lsp
+description: An MM0/MM1 server written in Rust.
+homepage: https://github.com/digama0/mm0
+licenses:
+  - CC0-1.0
+languages:
+  - Metamath Zero
+categories:
+  - LSP
+
+source:
+  # renovate:datasource=git-refs
+  id: pkg:github/digama0/mm0@f14ec60b770abfb3896130b801e440562eb628cf
+  build:
+    - target: unix
+      run: |
+        cd mm0-rs
+        cargo build --release
+      bin: mm0-rs/target/release/mm0-rs
+    - target: win
+      run: |
+        Set-Location -Path .\mm0-rs
+        cargo build --release
+      bin: mm0-rs/target/release/mm0-rs.exe
+
+schemas:
+  lsp: vscode:https://raw.githubusercontent.com/digama0/mm0/{{version}}/vscode-mm0/package.json
+
+bin:
+  mm0-rs: "{{source.build.bin}}"
+
+# requires rustc 1.65+
+ci_skip: true
+
+neovim:
+  lspconfig: mm0_ls

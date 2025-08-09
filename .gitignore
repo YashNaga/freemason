@@ -1,0 +1,33 @@
+# Neovim
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Lock files (keep lazy-lock.json for reproducibility)
+# lazy-lock.json
+
+# Test files
+test_*.lua
+debug_*.lua
+
+# Build artifacts
+*.tar.gz
+*.zip
+
+# IDE
+.vscode/
+.idea/
+
+# Local development
+local/

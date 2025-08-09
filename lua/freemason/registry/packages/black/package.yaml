@@ -1,0 +1,11 @@
+name: black
+description: Black, the uncompromising Python code formatter.
+homepage: https://github.com/psf/black
+languages:
+  - python
+categories:
+  - formatter
+executables:
+  - black
+install:
+  - pip install black
