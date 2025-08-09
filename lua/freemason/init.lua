@@ -24,6 +24,15 @@ function M.setup(opts)
             plugin_dir = vim.fn.fnamemodify(plugin_dir, ":h:h:h")
         end
         
+        -- If we're in a plugin manager directory (like lazy), find the actual plugin directory
+        if plugin_dir:match("/lazy$") or plugin_dir:match("/packer$") or plugin_dir:match("/plugged$") then
+            -- Look for the freemason directory within the plugin manager directory
+            local freemason_dir = plugin_dir .. "/freemason"
+            if vim.fn.isdirectory(freemason_dir) == 1 then
+                plugin_dir = freemason_dir
+            end
+        end
+        
         -- Set paths if not already configured by user
         if not conf.registry.lspconfig_path then
             conf.registry.lspconfig_path = plugin_dir .. "/external/nvim-lspconfig"
