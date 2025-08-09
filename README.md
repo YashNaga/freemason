@@ -22,6 +22,7 @@ Freemason requires the following system dependencies for tool installation:
 - **tar** - For extracting compressed archives
 - **unzip** - For extracting ZIP files
 - **git** - For cloning repositories (optional, for some tools)
+- **yq** - For parsing yaml data
 
 Most systems have these installed by default. On macOS, you can install them with:
 ```bash

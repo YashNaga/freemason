@@ -80,6 +80,10 @@ M.register_lsp = function(tool_name)
     end
     return false
   end
+  
+  -- Enable the LSP to auto-start when files are opened (Neovim 0.11+)
+  pcall(vim.lsp.enable, tool_name)
+  
   registered_lsps[tool_name] = final_config
   return true
 end
@@ -87,6 +91,9 @@ end
 --- Unregister an LSP configuration
 ---@param tool_name string
 M.unregister_lsp = function(tool_name)
+  -- Disable the LSP first (Neovim 0.11+)
+  pcall(vim.lsp.enable, tool_name, false)
+  
   -- Remove from Neovim's LSP registry
   pcall(vim.lsp.config, tool_name, nil)
   -- Remove from our local registry
