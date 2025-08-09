@@ -71,7 +71,7 @@ git clone https://github.com/YashNaga/freemason ~/.config/nvim/lua/freemason
 require('freemason').setup()
 ```
 
-Freemason works immediately with smart defaults! If you cloned the repository with submodules, you'll have access to 500+ tools automatically.
+Freemason works immediately with smart defaults! The plugin automatically detects and uses external repositories when available, giving you access to 500+ tools without any configuration.
 
 ### Full Functionality (Automatic Path Detection)
 
@@ -129,7 +129,7 @@ When installed via plugin managers (Packer, Lazy.nvim, vim-plug), Freemason auto
 require('freemason').setup()
 ```
 
-**Note**: Freemason works immediately with basic functionality. The external repositories provide access to 500+ additional tools. You'll see a notification about the current status on startup.
+**Note**: Freemason works immediately with basic functionality. When external repositories are available, you get access to 500+ additional tools automatically. You'll see a notification about the current status on startup.
 
 ### Automatic Path Detection
 

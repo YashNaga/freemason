@@ -135,10 +135,10 @@ M.defaults = {
         -- }
     },
 
-    -- External repository configuration
+    -- External repository configuration (will be set dynamically in init.lua)
     registry = {
-        lspconfig_path = "./external/nvim-lspconfig/lsp",        -- Default path to nvim-lspconfig LSP configs
-        mason_registry_path = "./external/mason-registry/packages" -- Default path to mason-registry packages
+        lspconfig_path = nil,        -- Will be set to absolute path in init.lua
+        mason_registry_path = nil    -- Will be set to absolute path in init.lua
     }
 }
 
