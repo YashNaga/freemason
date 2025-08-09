@@ -24,32 +24,13 @@ function M.setup(opts)
             plugin_dir = vim.fn.fnamemodify(plugin_dir, ":h:h:h")
         end
         
-        -- Only set absolute paths if user hasn't configured paths and relative paths don't work
-        local function check_path_exists(path)
-            return vim.fn.isdirectory(path) == 1
+        -- Set paths if not already configured by user
+        if not conf.registry.lspconfig_path then
+            conf.registry.lspconfig_path = plugin_dir .. "/external/nvim-lspconfig"
         end
         
-        -- Check if relative paths work, if not, use absolute paths as fallback
-        if not conf.registry.lspconfig_path or not check_path_exists(conf.registry.lspconfig_path) then
-            local relative_path = "./external/nvim-lspconfig"
-            local absolute_path = plugin_dir .. "/external/nvim-lspconfig"
-            
-            if check_path_exists(relative_path) then
-                conf.registry.lspconfig_path = relative_path
-            elseif check_path_exists(absolute_path) then
-                conf.registry.lspconfig_path = absolute_path
-            end
-        end
-        
-        if not conf.registry.mason_registry_path or not check_path_exists(conf.registry.mason_registry_path) then
-            local relative_path = "./external/mason-registry/packages"
-            local absolute_path = plugin_dir .. "/external/mason-registry/packages"
-            
-            if check_path_exists(relative_path) then
-                conf.registry.mason_registry_path = relative_path
-            elseif check_path_exists(absolute_path) then
-                conf.registry.mason_registry_path = absolute_path
-            end
+        if not conf.registry.mason_registry_path then
+            conf.registry.mason_registry_path = plugin_dir .. "/external/mason-registry/packages"
         end
         
         -- Debug: Show the configured paths
