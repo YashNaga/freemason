@@ -66,7 +66,26 @@ local function load_lspconfig_data(server_name)
             -- Look for the configuration table
             for k, v in pairs(env) do
                 if type(v) == "table" and v.cmd then
-                    return v
+                    -- Clean the configuration to remove any non-serializable data
+                    local clean_config = {}
+                    for config_key, config_value in pairs(v) do
+                        if type(config_value) == "string" or type(config_value) == "number" or type(config_value) == "boolean" then
+                            clean_config[config_key] = config_value
+                        elseif type(config_value) == "table" then
+                            -- Recursively clean tables
+                            local clean_table = {}
+                            for table_key, table_value in pairs(config_value) do
+                                if type(table_value) == "string" or type(table_value) == "number" or type(table_value) == "boolean" then
+                                    clean_table[table_key] = table_value
+                                elseif type(table_value) == "table" then
+                                    -- Skip nested tables for now to avoid complexity
+                                    clean_table[table_key] = {}
+                                end
+                            end
+                            clean_config[config_key] = clean_table
+                        end
+                    end
+                    return clean_config
                 end
             end
         end

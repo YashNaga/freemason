@@ -5,6 +5,8 @@
 
 A "fast", lightweight Neovim plugin for managing LSP servers, formatters, linters, and other development tools.
 
+> A note how it works. This uses git submodules to get configs and installation methods from mason and lsp's githubs and parses that data in its own way so depending on how those two repos are maintained that could cause sudden breaks and errors.
+
 ## Features
 
 - 🚀 **Fast startup** - Lazy registry compilation for instant Neovim startup

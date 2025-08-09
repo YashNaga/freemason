@@ -66,14 +66,31 @@ M.register_lsp = function(tool_name)
   end
   
   -- Clean up any potentially problematic data structures
-  if final_config.settings and final_config.settings.Lua then
-    -- Ensure all values are serializable
-    for key, value in pairs(final_config.settings.Lua) do
+  local function clean_table(t)
+    if type(t) ~= "table" then
+      return t
+    end
+    
+    local cleaned = {}
+    for key, value in pairs(t) do
       if type(value) == "function" then
-        final_config.settings.Lua[key] = nil
+        -- Skip functions
+      elseif type(value) == "table" then
+        cleaned[key] = clean_table(value)
+      elseif type(value) == "string" or type(value) == "number" or type(value) == "boolean" then
+        cleaned[key] = value
+      else
+        -- Skip other types (userdata, etc.)
+        if config.lsp.debug then
+          vim.notify("[Freemason] Skipping non-serializable value for key " .. tostring(key) .. ": " .. type(value), vim.log.levels.WARN)
+        end
       end
     end
+    return cleaned
   end
+  
+  -- Clean the entire configuration
+  final_config = clean_table(final_config)
 
   if not final_config.cmd then
     if config.lsp.debug then
@@ -82,6 +99,9 @@ M.register_lsp = function(tool_name)
     return false
   end
 
+  -- Debug: Show the configuration being registered
+  vim.notify("[Freemason] Registering LSP " .. tool_name .. " with config: " .. vim.inspect(final_config), vim.log.levels.INFO)
+  
   -- Register with Neovim's built-in LSP registry and remember locally
   local ok, result = pcall(vim.lsp.config, tool_name, final_config)
   if not ok then
