@@ -166,16 +166,16 @@ M.register_installed_lsps = function()
   local lockfile = require("freemason.lockfile")
   local registry = require("freemason.registry_cache")
   
-  -- Get all installed tools
-  local installed_tools = lockfile.get_all()
+  -- Get all installed tools from lockfile
+  local lockfile_data = lockfile.load()
   
-  for _, tool in ipairs(installed_tools) do
-    if tool.name then
+  for tool_name, tool_data in pairs(lockfile_data) do
+    if tool_name and tool_data then
       -- Check if this tool has an LSP configuration
-      local lsp_name = tool.name
-      if tool.name == "lua-language-server" then
+      local lsp_name = tool_name
+      if tool_name == "lua-language-server" then
         lsp_name = "lua_ls"
-      elseif tool.name == "typescript-language-server" then
+      elseif tool_name == "typescript-language-server" then
         lsp_name = "tsserver"
       end
       
