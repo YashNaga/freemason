@@ -150,12 +150,13 @@ function M.get_all_package_names()
         return {}
     end
     
+    vim.notify(string.format("[Freemason] Scanning for packages in: %s", registry_path), vim.log.levels.INFO)
+    
     local packages = {}
     
-    -- Try multiple possible directory structures
+    -- Use the registry path directly (it should already point to the packages directory)
     local package_dirs = {
-        registry_path,
-        registry_path .. "/packages"
+        registry_path
     }
     
     for _, packages_dir in ipairs(package_dirs) do

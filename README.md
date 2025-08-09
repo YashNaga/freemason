@@ -61,6 +61,8 @@ git clone --recursive https://github.com/YashNaga/freemason ~/.config/nvim/lua/f
 git clone https://github.com/YashNaga/freemason ~/.config/nvim/lua/freemason
 ```
 
+**Note**: The `--recursive` flag includes external repositories (nvim-lspconfig and mason-registry) for full functionality. Without it, you'll still have basic functionality, and Freemason will attempt to auto-detect external repositories if they're available elsewhere.
+
 ## Setup
 
 ### Basic Setup (Works Out-of-the-Box)
@@ -71,9 +73,9 @@ require('freemason').setup()
 
 Freemason works immediately with smart defaults! If you cloned the repository with submodules, you'll have access to 500+ tools automatically.
 
-### Full Functionality (Automatic with Submodules)
+### Full Functionality (Automatic Path Detection)
 
-When you clone Freemason with submodules, you get full functionality automatically:
+Freemason automatically detects and uses external repositories for full functionality:
 
 #### Option 1: Using Git Submodules (Recommended)
 
@@ -92,7 +94,7 @@ Then use the default configuration:
 
 ```lua
 require('freemason').setup()
--- Smart defaults will automatically use:
+-- Freemason automatically detects and uses:
 -- ./external/nvim-lspconfig/lsp
 -- ./external/mason-registry/packages
 ```
@@ -118,7 +120,29 @@ require('freemason').setup({
 })
 ```
 
+#### Option 3: Plugin Manager Installation
+
+When installed via plugin managers (Packer, Lazy.nvim, vim-plug), Freemason automatically detects the correct paths:
+
+```lua
+-- Works automatically with any plugin manager
+require('freemason').setup()
+```
+
 **Note**: Freemason works immediately with basic functionality. The external repositories provide access to 500+ additional tools. You'll see a notification about the current status on startup.
+
+### Automatic Path Detection
+
+Freemason automatically detects external repositories in the following order:
+
+1. **User Configuration** - Paths specified in your config
+2. **Relative Paths** - `./external/nvim-lspconfig/lsp` and `./external/mason-registry/packages`
+3. **Absolute Paths** - Automatically calculated based on plugin location (for plugin manager installations)
+
+This ensures Freemason works correctly whether you:
+- Clone the repository manually
+- Install via plugin managers
+- Use custom repository locations
 
 ## Configuration
 
@@ -238,7 +262,7 @@ require('freemason').setup({
     debug = false                -- Enable debug output
   },
 
-  -- External repository configuration
+  -- External repository configuration (optional - auto-detected by default)
   registry = {
     lspconfig_path = "./external/nvim-lspconfig/lsp",        -- Path to nvim-lspconfig LSP configs
     mason_registry_path = "./external/mason-registry/packages" -- Path to mason-registry packages
