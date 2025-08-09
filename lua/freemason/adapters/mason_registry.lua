@@ -154,8 +154,8 @@ function M.get_all_package_names()
     
     -- Try multiple possible directory structures
     local package_dirs = {
-        registry_path .. "/packages",
-        registry_path
+        registry_path,
+        registry_path .. "/packages"
     }
     
     for _, packages_dir in ipairs(package_dirs) do

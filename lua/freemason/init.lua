@@ -21,11 +21,15 @@ function M.setup(opts)
         
         -- Set default paths if not provided
         if not conf.registry.lspconfig_path then
-            conf.registry.lspconfig_path = plugin_dir .. "/external/nvim-lspconfig/lsp"
+            conf.registry.lspconfig_path = plugin_dir .. "/external/nvim-lspconfig"
         end
         if not conf.registry.mason_registry_path then
             conf.registry.mason_registry_path = plugin_dir .. "/external/mason-registry/packages"
         end
+        
+        -- Debug: Show the configured paths
+        vim.notify(string.format("[Freemason] Mason-registry path: %s", conf.registry.mason_registry_path), vim.log.levels.INFO)
+        vim.notify(string.format("[Freemason] Nvim-lspconfig path: %s", conf.registry.lspconfig_path), vim.log.levels.INFO)
         
         -- Set the paths in adapters
         adapters.set_lspconfig_path(conf.registry.lspconfig_path)
