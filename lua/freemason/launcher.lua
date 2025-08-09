@@ -64,6 +64,16 @@ M.register_lsp = function(tool_name)
   if override then
     deep_merge(final_config, override)
   end
+  
+  -- Clean up any potentially problematic data structures
+  if final_config.settings and final_config.settings.Lua then
+    -- Ensure all values are serializable
+    for key, value in pairs(final_config.settings.Lua) do
+      if type(value) == "function" then
+        final_config.settings.Lua[key] = nil
+      end
+    end
+  end
 
   if not final_config.cmd then
     if config.lsp.debug then
@@ -82,7 +92,13 @@ M.register_lsp = function(tool_name)
   end
   
   -- Enable the LSP to auto-start when files are opened (Neovim 0.11+)
-  pcall(vim.lsp.enable, tool_name)
+  local ok, err = pcall(vim.lsp.enable, tool_name)
+  if not ok then
+    if config.lsp.debug then
+      vim.notify("[Freemason] Failed to enable LSP " .. tool_name .. ": " .. tostring(err), vim.log.levels.ERROR)
+    end
+    return false
+  end
   
   registered_lsps[tool_name] = final_config
   return true
