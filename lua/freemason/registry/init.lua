@@ -31,26 +31,6 @@ function M.get(name)
         end
     end
     
-    -- Fallback to local package.yaml
-    local package_path = Path:new(vim.fn.stdpath("config")):join("lua", "freemason", "registry", "packages", name, "package.yaml")
-    
-    if package_path:exists() then
-        local content = package_path:read()
-        local package_data = yaml.parse(content)
-        
-        if package_data then
-            return {
-                name = package_data.name or name,
-                description = package_data.description or "",
-                homepage = package_data.homepage or "",
-                languages = package_data.languages or {},
-                categories = package_data.categories or {},
-                executables = package_data.executables or {},
-                source_type = "local"
-            }
-        end
-    end
-    
     return nil
 end
 

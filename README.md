@@ -471,14 +471,19 @@ freemason/
 ├── registry/           # Tool registry management
 ├── installer/          # Tool installation logic
 ├── ui/                 # User interface
-└── launcher.lua        # LSP client management
+├── launcher.lua        # LSP client management
+└── external/           # Git submodules
+    ├── nvim-lspconfig/ # LSP configurations (500+)
+    └── mason-registry/ # Tool definitions (500+)
 ```
 
 ### Adding New Tools
 
-1. Add tool definition to `registry/packages/`
-2. Add LSP config to `lsp/configs/` (if applicable)
+1. Add tool definition to `external/mason-registry/packages/` (if contributing to mason-registry)
+2. Add LSP config to `external/nvim-lspconfig/lua/lspconfig/configs/` (if contributing to nvim-lspconfig)
 3. Test installation and functionality
+
+**Note**: Freemason uses external repositories (mason-registry and nvim-lspconfig) for tool definitions and LSP configurations. Local configurations are not used.
 
 ### Contributing
 
