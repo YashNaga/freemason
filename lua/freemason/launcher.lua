@@ -91,6 +91,22 @@ M.register_lsp = function(tool_name)
   
   -- Clean the entire configuration
   final_config = clean_table(final_config)
+  
+  -- Fix workspace.library structure if it exists
+  if final_config.settings and final_config.settings.Lua and final_config.settings.Lua.workspace and final_config.settings.Lua.workspace.library then
+    local library = final_config.settings.Lua.workspace.library
+    -- Ensure library is a proper table with only string keys and boolean values
+    local clean_library = {}
+    for key, value in pairs(library) do
+      if type(key) == "string" and type(value) == "boolean" then
+        clean_library[key] = value
+      elseif type(key) == "number" and type(value) == "string" then
+        -- Convert array-style entries to table-style
+        clean_library[value] = true
+      end
+    end
+    final_config.settings.Lua.workspace.library = clean_library
+  end
 
   if not final_config.cmd then
     if config.lsp.debug then
