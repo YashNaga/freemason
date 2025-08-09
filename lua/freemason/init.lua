@@ -62,6 +62,43 @@ function M.setup(opts)
         launcher.setup_idle_shutdown()
     end
     
+    -- Register installed LSPs on startup
+    if launcher and launcher.register_installed_lsps then
+        launcher.register_installed_lsps()
+    end
+    
+    -- Set up LSP keymaps if enabled
+    if conf.lsp and conf.lsp.keymaps then
+        local keymaps = require("freemason.lsp.keymaps")
+        keymaps.setup_autocmd(conf.lsp.keymaps)
+    end
+    
+    -- Set up diagnostics if enabled
+    if conf.lsp and conf.lsp.diagnostics then
+        local diagnostics = conf.lsp.diagnostics
+        if diagnostics.enabled then
+            -- Configure diagnostic signs
+            if diagnostics.signs and diagnostics.signs.enabled then
+                for severity, icon in pairs(diagnostics.signs.text) do
+                    vim.fn.sign_define('DiagnosticSign' .. severity, {
+                        text = icon,
+                        texthl = 'DiagnosticSign' .. severity,
+                    })
+                end
+            end
+            
+            -- Configure diagnostic virtual text
+            if diagnostics.virtual_text then
+                vim.diagnostic.config({
+                    virtual_text = diagnostics.virtual_text,
+                    underline = diagnostics.underline or { enabled = true },
+                    signs = diagnostics.signs and diagnostics.signs.enabled or true,
+                    severity_sort = diagnostics.severity_sort or true,
+                })
+            end
+        end
+    end
+    
     -- Fire setup hook if enabled
     if conf.hooks and conf.hooks.enable then
         vim.api.nvim_exec_autocmds("User", { pattern = "FreemasonSetup" })

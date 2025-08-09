@@ -115,8 +115,10 @@ M.register_lsp = function(tool_name)
     return false
   end
 
-  -- Debug: Show the configuration being registered
-  vim.notify("[Freemason] Registering LSP " .. tool_name .. " with config: " .. vim.inspect(final_config), vim.log.levels.INFO)
+  -- Debug: Show the configuration being registered (only if debug is enabled)
+  if config.lsp.debug then
+    vim.notify("[Freemason] Registering LSP " .. tool_name .. " with config: " .. vim.inspect(final_config), vim.log.levels.INFO)
+  end
   
   -- Register with Neovim's built-in LSP registry and remember locally
   local ok, result = pcall(vim.lsp.config, tool_name, final_config)
@@ -157,6 +159,33 @@ end
 ---@return table
 M.get_registered_lsps = function()
   return registered_lsps
+end
+
+--- Register all installed LSPs on startup
+M.register_installed_lsps = function()
+  local lockfile = require("freemason.lockfile")
+  local registry = require("freemason.registry_cache")
+  
+  -- Get all installed tools
+  local installed_tools = lockfile.get_all()
+  
+  for _, tool in ipairs(installed_tools) do
+    if tool.name then
+      -- Check if this tool has an LSP configuration
+      local lsp_name = tool.name
+      if tool.name == "lua-language-server" then
+        lsp_name = "lua_ls"
+      elseif tool.name == "typescript-language-server" then
+        lsp_name = "tsserver"
+      end
+      
+      -- Try to register the LSP
+      local success = M.register_lsp(lsp_name)
+      if success then
+        vim.notify("[Freemason] Registered LSP: " .. lsp_name, vim.log.levels.INFO)
+      end
+    end
+  end
 end
 
 --- Enable an LSP for the current buffer using built-in API
