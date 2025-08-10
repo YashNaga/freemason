@@ -78,7 +78,7 @@ function M.initialize_adapters_sync()
         if ok and adapter then
             adapter.set_lspconfig_path(lspconfig_path)
             lspconfig_adapter = adapter
-            vim.notify("[Freemason] Loaded nvim-lspconfig", vim.log.levels.INFO)
+            -- vim.notify("[Freemason] Loaded nvim-lspconfig", vim.log.levels.INFO)
         else
             success = false
             vim.notify("[Freemason] Failed to initialize nvim-lspconfig adapter", vim.log.levels.WARN)
@@ -91,7 +91,7 @@ function M.initialize_adapters_sync()
         if ok and adapter then
             adapter.set_registry_path(mason_registry_path)
             mason_registry_adapter = adapter
-            vim.notify("[Freemason] Loaded mason-registry", vim.log.levels.INFO)
+            -- vim.notify("[Freemason] Loaded mason-registry", vim.log.levels.INFO)
         else
             success = false
             vim.notify("[Freemason] Failed to initialize mason-registry adapter", vim.log.levels.WARN)

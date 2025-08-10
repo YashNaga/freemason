@@ -46,11 +46,11 @@ function M.setup(opts)
     
     -- Show setup message based on external repository configuration
     if conf.registry and conf.registry.lspconfig_path and conf.registry.mason_registry_path then
-        vim.notify(
-            "[Freemason] External repositories configured successfully. " ..
-            "Full functionality available.",
-            vim.log.levels.INFO
-        )
+        -- vim.notify(
+            -- "[Freemason] External repositories configured successfully. " ..
+            -- "Full functionality available.",
+            -- vim.log.levels.INFO
+        -- )
     else
         vim.notify(
             "[Freemason] External repositories not configured. " ..
