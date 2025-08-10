@@ -150,7 +150,7 @@ function M.get_all_package_names()
         return {}
     end
     
-    vim.notify(string.format("[Freemason] Scanning for packages in: %s", registry_path), vim.log.levels.INFO)
+    -- vim.notify(string.format("[Freemason] Scanning for packages in: %s", registry_path), vim.log.levels.INFO)
     
     local packages = {}
     
@@ -178,7 +178,7 @@ function M.get_all_package_names()
         end
     end
     
-    vim.notify(string.format("[Freemason] Found %d packages in %s", #packages, registry_path), vim.log.levels.INFO)
+    -- vim.notify(string.format("[Freemason] Found %d packages in %s", #packages, registry_path), vim.log.levels.INFO)
     return packages
 end
 

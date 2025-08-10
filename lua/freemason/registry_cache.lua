@@ -9,7 +9,7 @@ local CACHE_TTL = 600
 local function ensure_compiled()
     -- This was tricky - had to check if already compiled first
     if compiled_registry.get_stats().compiled then return end
-            vim.notify("[Freemason] Compiling registry...", vim.log.levels.INFO)
+            -- vim.notify("[Freemason] Compiling registry...", vim.log.levels.INFO)
     compiled_registry.compile_registry()
 end
 
