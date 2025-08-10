@@ -24,11 +24,8 @@ end
 local function load_lspconfig_data(server_name)
     if not lspconfig_path then
         -- Fallback to current system if submodule not available
-        vim.notify("[Freemason] LSP config path not set", vim.log.levels.WARN)
         return nil
     end
-    
-    vim.notify("[Freemason] Loading LSP config for: " .. server_name .. " from path: " .. lspconfig_path, vim.log.levels.INFO)
     
     -- Try multiple possible paths for the config file
     local config_paths = {
@@ -48,11 +45,8 @@ local function load_lspconfig_data(server_name)
     end
     
     if not config_file then
-        vim.notify("[Freemason] No config file found for: " .. server_name, vim.log.levels.WARN)
         return nil
     end
-    
-    vim.notify("[Freemason] Found config file: " .. config_file, vim.log.levels.INFO)
     
     local file = io.open(config_file, "r")
     if not file then

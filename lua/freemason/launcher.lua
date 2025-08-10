@@ -31,24 +31,11 @@ local function get_lsp_config(tool_name)
     if adapter then
         local adapter_config = adapter.get(tool_name)
         if adapter_config and adapter_config.config then
-            if config.lsp.debug then
-                vim.notify("[Freemason] Found LSP config for: " .. tool_name, vim.log.levels.INFO)
-            end
             return adapter_config.config
-        else
-            if config.lsp.debug then
-                vim.notify("[Freemason] No adapter config found for: " .. tool_name, vim.log.levels.WARN)
-            end
         end
-    else
-        if config.lsp.debug then
-            vim.notify("[Freemason] LSP adapter not available", vim.log.levels.WARN)
-        end
+    end
     end
     
-    if config.lsp.debug then
-        vim.notify("[Freemason] No config found for: " .. tool_name, vim.log.levels.WARN)
-    end
     return nil
 end
 
@@ -86,9 +73,6 @@ M.register_lsp = function(tool_name)
         cleaned[key] = value
       else
         -- Skip other types (userdata, etc.)
-        if config.lsp.debug then
-          vim.notify("[Freemason] Skipping non-serializable value for key " .. tostring(key) .. ": " .. type(value), vim.log.levels.WARN)
-        end
       end
     end
     return cleaned
@@ -114,32 +98,20 @@ M.register_lsp = function(tool_name)
   end
 
   if not final_config.cmd then
-    if config.lsp.debug then
-      vim.notify("[Freemason] No `cmd` defined in config for: " .. tool_name, vim.log.levels.WARN)
-    end
     return false
   end
 
-  -- Debug: Show the configuration being registered (only if debug is enabled)
-  if config.lsp.debug then
-    vim.notify("[Freemason] Registering LSP " .. tool_name .. " with config: " .. vim.inspect(final_config), vim.log.levels.INFO)
-  end
+
   
   -- Register with Neovim's built-in LSP registry and remember locally
   local ok, result = pcall(vim.lsp.config, tool_name, final_config)
   if not ok then
-    if config.lsp.debug then
-      vim.notify("[Freemason] Failed to register LSP " .. tool_name .. ": " .. tostring(result), vim.log.levels.ERROR)
-    end
     return false
   end
   
   -- Enable the LSP to auto-start when files are opened (Neovim 0.11+)
   local ok, err = pcall(vim.lsp.enable, tool_name)
   if not ok then
-    if config.lsp.debug then
-      vim.notify("[Freemason] Failed to enable LSP " .. tool_name .. ": " .. tostring(err), vim.log.levels.ERROR)
-    end
     return false
   end
   
@@ -188,8 +160,8 @@ M.register_installed_lsps = function()
       local success = M.register_lsp(lsp_name)
       if success then
         vim.notify("[Freemason] Registered LSP: " .. lsp_name, vim.log.levels.INFO)
-      else
-        vim.notify("[Freemason] Failed to register LSP: " .. lsp_name, vim.log.levels.WARN)
+      -- else
+        -- vim.notify("[Freemason] Failed to register LSP: " .. lsp_name, vim.log.levels.WARN)
       end
     end
   end

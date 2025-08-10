@@ -125,7 +125,7 @@ M.defaults = {
         },
 
         -- Debug settings
-        debug = true, -- Enable debug output
+        debug = false, -- Enable debug output
     },
 
     overrides = {
