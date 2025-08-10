@@ -31,14 +31,19 @@ local function get_lsp_config(tool_name)
     if adapter then
         local adapter_config = adapter.get(tool_name)
         if adapter_config and adapter_config.config then
+            if config.lsp.debug then
+                vim.notify("[Freemason] Found LSP config for: " .. tool_name, vim.log.levels.INFO)
+            end
             return adapter_config.config
+        else
+            if config.lsp.debug then
+                vim.notify("[Freemason] No adapter config found for: " .. tool_name, vim.log.levels.WARN)
+            end
         end
-    end
-    
-    -- Fallback to local config
-    local ok, default_config = pcall(require, "freemason.lsp.configs." .. tool_name)
-    if ok and type(default_config) == "table" then
-        return default_config
+    else
+        if config.lsp.debug then
+            vim.notify("[Freemason] LSP adapter not available", vim.log.levels.WARN)
+        end
     end
     
     if config.lsp.debug then
@@ -183,6 +188,8 @@ M.register_installed_lsps = function()
       local success = M.register_lsp(lsp_name)
       if success then
         vim.notify("[Freemason] Registered LSP: " .. lsp_name, vim.log.levels.INFO)
+      else
+        vim.notify("[Freemason] Failed to register LSP: " .. lsp_name, vim.log.levels.WARN)
       end
     end
   end
