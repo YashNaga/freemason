@@ -153,13 +153,11 @@ M.register_installed_lsps = function()
         lsp_name = "tsserver"
       end
       
-      -- Try to register the LSP
-      -- local success = M.register_lsp(lsp_name)
-      -- if success then
-        -- vim.notify("[Freemason] Registered LSP: " .. lsp_name, vim.log.levels.INFO)
-      -- else
-        -- vim.notify("[Freemason] Failed to register LSP: " .. lsp_name, vim.log.levels.WARN)
-      -- end
+        -- Try to register the LSP
+        local success = M.register_lsp(lsp_name)
+        if success then
+          -- vim.notify("[Freemason] Registered LSP: " .. lsp_name, vim.log.levels.INFO)
+        end
     end
   end
 end
