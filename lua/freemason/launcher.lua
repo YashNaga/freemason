@@ -34,7 +34,6 @@ local function get_lsp_config(tool_name)
             return adapter_config.config
         end
     end
-    end
     
     return nil
 end
@@ -100,8 +99,6 @@ M.register_lsp = function(tool_name)
   if not final_config.cmd then
     return false
   end
-
-
   
   -- Register with Neovim's built-in LSP registry and remember locally
   local ok, result = pcall(vim.lsp.config, tool_name, final_config)
